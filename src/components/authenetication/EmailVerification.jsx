@@ -4,14 +4,14 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function EmailVerification() {
   const { token } = useParams();
-  const { verifyEmail } = useAuth();
+  const { verifyEmailAndRegister } = useAuth();
   const navigate = useNavigate();
   const [verificationStatus, setVerificationStatus] = useState("verifying");
 
   useEffect(() => {
     const verifyEmailToken = async () => {
       try {
-        await verifyEmail(token);
+        await verifyEmailAndRegister(token);
         setVerificationStatus("success");
         setTimeout(() => navigate("/dashboard"), 3000); // Redirect to dashboard after 3 seconds
       } catch (err) {
@@ -21,7 +21,7 @@ export default function EmailVerification() {
     };
 
     verifyEmailToken();
-  }, [token, verifyEmail, navigate]);
+  }, [token, verifyEmailAndRegister, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
