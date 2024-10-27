@@ -138,7 +138,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/verify-email" element={<EmailVerification />} />
+          <Route path="/verify-email/:token" element={<EmailVerification />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           {/* <Route path="/reset-password/:token" element={<ResetPassword />} /> */}
           <Route path="/reset-password" element={<ResetPassword />} />
