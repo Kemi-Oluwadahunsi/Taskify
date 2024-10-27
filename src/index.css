@@ -1,0 +1,60 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body {
+  @apply bg-gradient-to-br from-background-light to-accent dark:from-background-dark dark:to-primary transition-bg duration-500;
+}
+
+.react-big-calendar {
+  @apply font-sans;
+}
+
+.react-big-calendar .rbc-today {
+  @apply bg-accent bg-opacity-20 dark:bg-primary dark:bg-opacity-20;
+}
+
+.react-big-calendar .rbc-event {
+  @apply bg-primary dark:bg-accent;
+}
+
+.react-big-calendar .rbc-toolbar button {
+  @apply bg-white dark:bg-gray-700 text-primary dark:text-accent border-primary dark:border-accent;
+}
+
+.react-big-calendar .rbc-toolbar button:hover {
+  @apply bg-primary dark:bg-accent text-white;
+}
+
+.react-big-calendar .rbc-toolbar button:active,
+.react-big-calendar .rbc-toolbar button.rbc-active {
+  @apply bg-secondary dark:bg-secondary text-white;
+}
+
+.authbg {
+  backdrop-filter: blur(4.5px);
+  -webkit-backdrop-filter: blur(4.5px);
+}
+
+
+
+@media screen and (max-width: 1023px){
+  .authbackgroundmobile {
+  background: url("/images/authbg2.webp") no-repeat center/cover;
+}
+
+.authbgmobile {
+  background: linear-gradient(to bottom, rgba(255, 221, 221, 0.7), rgb(255, 150, 150) );
+  backdrop-filter: blur(4.5px);
+  -webkit-backdrop-filter: blur(4.5px);
+}
+}
+
+
+/* #181a38
+#783c4e
+#793648
+#943f4a
+#35273e
+#f9fafc
+#bf4c51 */
