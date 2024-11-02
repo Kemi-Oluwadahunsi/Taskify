@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
+import { Loader2 } from "lucide-react";
 
 export default function EmailVerification() {
   const [searchParams] = useSearchParams();
-  const { verifyEmail } = useAuth();
+  const { verifyEmailAndRegister } = useAuth();
   const navigate = useNavigate();
   const [verificationStatus, setVerificationStatus] = useState("verifying");
   const [error, setError] = useState("");
@@ -12,31 +13,30 @@ export default function EmailVerification() {
   useEffect(() => {
     const verifyEmailToken = async () => {
       const token = searchParams.get("token");
-      const email = searchParams.get("email");
-
-      if (!token || !email) {
+      if (!token) {
         setVerificationStatus("error");
-        setError("Invalid verification link.");
+        setError(
+          "Invalid verification link. Please ensure you've clicked the correct link from your email."
+        );
         return;
       }
 
       try {
-        await verifyEmail(token);
+        await verifyEmailAndRegister(token);
         setVerificationStatus("success");
-        setTimeout(
-          () =>
-            navigate(`/login?email=${encodeURIComponent(email)}&verified=true`),
-          3000
-        );
+        setTimeout(() => navigate("/dashboard"), 3000);
       } catch (err) {
         console.error("Email verification failed:", err);
         setVerificationStatus("error");
-        setError(err.message || "Verification failed. Please try again.");
+        setError(
+          err.message ||
+            "Verification failed. Please try again or contact support."
+        );
       }
     };
 
     verifyEmailToken();
-  }, [searchParams, verifyEmail, navigate]);
+  }, [searchParams, verifyEmailAndRegister, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -46,27 +46,30 @@ export default function EmailVerification() {
             Email Verification
           </h2>
           {verificationStatus === "verifying" && (
-            <p className="mt-2 text-center text-sm text-gray-600">
-              Please wait while we verify your email address...
-            </p>
+            <div className="mt-4 flex flex-col items-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="mt-2 text-center text-sm text-gray-600">
+                Please wait while we verify your email address...
+              </p>
+            </div>
           )}
           {verificationStatus === "success" && (
-            <div>
-              <p className="mt-2 text-center text-sm text-green-600">
+            <div className="mt-4 text-center">
+              <p className="text-lg font-medium text-green-600">
                 Your email has been successfully verified!
               </p>
-              <p className="mt-2 text-center text-sm text-gray-600">
-                You will be redirected to the login page in a few seconds...
+              <p className="mt-2 text-sm text-gray-600">
+                You will be redirected to the dashboard in a few seconds...
               </p>
             </div>
           )}
           {verificationStatus === "error" && (
-            <div>
-              <p className="mt-2 text-center text-sm text-red-600">
+            <div className="mt-4 text-center">
+              <p className="text-lg font-medium text-red-600">
                 Email verification failed.
               </p>
-              <p className="mt-2 text-center text-sm text-gray-600">{error}</p>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-sm text-gray-600">{error}</p>
+              <p className="mt-2 text-sm text-gray-600">
                 Please try again or contact support.
               </p>
             </div>
