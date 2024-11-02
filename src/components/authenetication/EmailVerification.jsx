@@ -1,27 +1,37 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function EmailVerification() {
   const { emailToken } = useParams();
-  const { verifyEmailAndRegister } = useAuth();
+  const { verifyEmailAndRegister, login } = useAuth();
   const navigate = useNavigate();
   const [verificationStatus, setVerificationStatus] = useState("verifying");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const verifyEmailToken = async () => {
       try {
-        await verifyEmailAndRegister(emailToken);
+        const user = await verifyEmailAndRegister(emailToken);
         setVerificationStatus("success");
-        setTimeout(() => navigate("/dashboard"), 3000);
+
+        // Attempt to log in the user automatically
+        try {
+          await login(user.email, user.password); // Note: The backend should not return the actual password
+          setTimeout(() => navigate("/dashboard"), 3000);
+        } catch (loginError) {
+          console.error("Auto-login failed:", loginError);
+          setTimeout(() => navigate("/login"), 3000);
+        }
       } catch (err) {
         console.error("Email verification failed:", err);
         setVerificationStatus("error");
+        setError(err.message || "Verification failed. Please try again.");
       }
     };
 
     verifyEmailToken();
-  }, [emailToken, verifyEmailAndRegister, navigate]);
+  }, [emailToken, verifyEmailAndRegister, login, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -46,9 +56,15 @@ export default function EmailVerification() {
             </div>
           )}
           {verificationStatus === "error" && (
-            <p className="mt-2 text-center text-sm text-red-600">
-              Email verification failed. Please try again or contact support.
-            </p>
+            <div>
+              <p className="mt-2 text-center text-sm text-red-600">
+                Email verification failed.
+              </p>
+              <p className="mt-2 text-center text-sm text-gray-600">{error}</p>
+              <p className="mt-2 text-center text-sm text-gray-600">
+                Please try again or contact support.
+              </p>
+            </div>
           )}
         </div>
       </div>
