@@ -256,13 +256,15 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const verifyEmailAndRegister = async (token) => {
+  const verifyEmailAndRegister = async (emailToken) => {
     try {
       console.log(
         "Attempting to verify email and register user with token:",
-        token
+        emailToken
       );
-      const response = await axios.post(`${API_URL}/verify-email`, { token });
+      const response = await axios.post(
+        `${API_URL}/verify-email/${emailToken}`
+      );
       console.log(
         "Email verification and registration response:",
         response.data
@@ -290,8 +292,9 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       console.log("Attempting to log in user:", email);
-      const response = await axios.get(`${API_URL}/login`, {
-        params: { email, password },
+      const response = await axios.post(`${API_URL}/login`, {
+        email,
+        password,
       });
       console.log("Login response:", response.data);
       const { token, user } = response.data;

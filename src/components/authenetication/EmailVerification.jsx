@@ -13,7 +13,7 @@ export default function EmailVerification() {
       try {
         await verifyEmailAndRegister(token);
         setVerificationStatus("success");
-        setTimeout(() => navigate("/dashboard"), 3000); // Redirect to dashboard after 3 seconds
+        setTimeout(() => navigate("/dashboard"), 3000);
       } catch (err) {
         console.error("Email verification failed:", err);
         setVerificationStatus("error");
