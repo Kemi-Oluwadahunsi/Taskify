@@ -1,28 +1,33 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function EmailVerification() {
-  const { emailToken } = useParams();
-  const { verifyEmailAndRegister, login } = useAuth();
+  const [searchParams] = useSearchParams();
+  const { verifyEmail } = useAuth();
   const navigate = useNavigate();
   const [verificationStatus, setVerificationStatus] = useState("verifying");
   const [error, setError] = useState("");
 
   useEffect(() => {
     const verifyEmailToken = async () => {
-      try {
-        const user = await verifyEmailAndRegister(emailToken);
-        setVerificationStatus("success");
+      const token = searchParams.get("token");
+      const email = searchParams.get("email");
 
-        // Attempt to log in the user automatically
-        try {
-          await login(user.email, user.password); // Note: The backend should not return the actual password
-          setTimeout(() => navigate("/dashboard"), 3000);
-        } catch (loginError) {
-          console.error("Auto-login failed:", loginError);
-          setTimeout(() => navigate("/login"), 3000);
-        }
+      if (!token || !email) {
+        setVerificationStatus("error");
+        setError("Invalid verification link.");
+        return;
+      }
+
+      try {
+        await verifyEmail(token);
+        setVerificationStatus("success");
+        setTimeout(
+          () =>
+            navigate(`/login?email=${encodeURIComponent(email)}&verified=true`),
+          3000
+        );
       } catch (err) {
         console.error("Email verification failed:", err);
         setVerificationStatus("error");
@@ -31,7 +36,7 @@ export default function EmailVerification() {
     };
 
     verifyEmailToken();
-  }, [emailToken, verifyEmailAndRegister, login, navigate]);
+  }, [searchParams, verifyEmail, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -51,7 +56,7 @@ export default function EmailVerification() {
                 Your email has been successfully verified!
               </p>
               <p className="mt-2 text-center text-sm text-gray-600">
-                You will be redirected to the dashboard in a few seconds...
+                You will be redirected to the login page in a few seconds...
               </p>
             </div>
           )}
