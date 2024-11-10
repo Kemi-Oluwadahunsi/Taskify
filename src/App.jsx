@@ -4,7 +4,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { useAuth } from "./contexts/AuthContext";
+// import { useAuth } from "./contexts/AuthContext";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/authenetication/Login";
 import Register from "./components/authenetication/Register";
@@ -14,15 +14,15 @@ import ForgotPassword from "./components/authenetication/ForgotPassword";
 import ResetPassword from "./components/authenetication/ResetPassword";
 import HomePage from "./components/landing-page/HomePage";
 
-function ProtectedRoute({ children }) {
-  const { currentUser } = useAuth();
+// function ProtectedRoute({ children }) {
+//   const { currentUser } = useAuth();
 
-  if (!currentUser) {
-    return <Navigate to="/login" replace />;
-  }
+//   if (!currentUser) {
+//     return <Navigate to="/login" replace />;
+//   }
 
-  return children;
-}
+//   return children;
+// }
 
 function App() {
   return (
@@ -39,9 +39,9 @@ function App() {
           <Route
             path="/dashboard/*"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <Dashboard />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route path="*" element={<Navigate to="/" replace />} />

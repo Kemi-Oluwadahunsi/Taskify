@@ -497,6 +497,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem("token", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setCurrentUser(user);
+      console.log(user)
       return user;
     } catch (error) {
       console.error("Error during login:", error);
