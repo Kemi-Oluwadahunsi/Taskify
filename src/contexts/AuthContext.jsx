@@ -404,7 +404,6 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [resetToken, setResetToken] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -562,21 +561,14 @@ export function AuthProvider({ children }) {
   //   }
   // };
 
-  const resetPassword = async (newPassword) => {
-    if (!resetToken) {
-      throw new Error(
-        "Reset token not found. Please request a new password reset."
-      );
-    }
+  const resetPassword = async (token, newPassword) => {
     try {
       console.log("Attempting to reset password");
       const response = await axios.post(`${API_URL}/reset-password`, {
-        token: resetToken,
+        token,
         newPassword,
       });
       console.log("Password reset response:", response.data);
-      // Clear the reset token after successful reset
-      setResetToken(null);
       return response.data.message;
     } catch (error) {
       console.error("Error resetting password:", error);
@@ -633,8 +625,6 @@ export function AuthProvider({ children }) {
     logout,
     forgotPassword,
     resetPassword,
-    resetToken,
-    setResetToken,
     updateProfile,
     deleteAccount,
   };
