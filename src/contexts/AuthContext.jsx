@@ -536,36 +536,10 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // const resetPassword = async (token, newPassword) => {
-  //   try {
-  //     console.log("Attempting to reset password");
-  //     const response = await axios.post(`${API_URL}/reset-password/${token}`, {
-  //       newPassword,
-  //     });
-  //     console.log("Password reset response:", response.data);
-  //     return response.data.message;
-  //   } catch (error) {
-  //     console.error("Error resetting password:", error);
-  //     if (error.response) {
-  //       console.error("Error response:", error.response.data);
-  //       throw new Error(
-  //         error.response.data.message || "Failed to reset password"
-  //       );
-  //     } else if (error.request) {
-  //       console.error("No response received:", error.request);
-  //       throw new Error("No response received from server");
-  //     } else {
-  //       console.error("Error setting up request:", error.message);
-  //       throw new Error("Error setting up request");
-  //     }
-  //   }
-  // };
-
   const resetPassword = async (token, newPassword) => {
     try {
-      console.log("Attempting to reset password");
-      const response = await axios.post(`${API_URL}/reset-password`, {
-        token,
+      console.log(`Attempting to reset password with token: ${token}`);
+      const response = await axios.post(`${API_URL}/reset-password/${token}`, {
         newPassword,
       });
       console.log("Password reset response:", response.data);
