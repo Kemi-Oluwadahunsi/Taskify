@@ -497,7 +497,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem("token", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setCurrentUser(user);
-      console.log(user)
+      console.log(user);
       return user;
     } catch (error) {
       console.error("Error during login:", error);
@@ -546,10 +546,17 @@ export function AuthProvider({ children }) {
       return response.data.message;
     } catch (error) {
       console.error("Error resetting password:", error);
-      if (error.response && error.response.data) {
-        throw new Error(error.response.data.message);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        throw new Error(
+          error.response.data.message || "Failed to reset password"
+        );
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+        throw new Error("No response received from server");
       } else {
-        throw new Error("An error occurred while resetting password.");
+        console.error("Error setting up request:", error.message);
+        throw new Error("Error setting up request");
       }
     }
   };

@@ -185,8 +185,9 @@ export default function ResetPassword() {
       });
     } catch (error) {
       setError(
-        "Failed to reset password. Please try again or request a new reset link:", error
+        "Failed to reset password. Please try again or request a new reset link", error
       );
+      console.error(error)
     }
   };
 
