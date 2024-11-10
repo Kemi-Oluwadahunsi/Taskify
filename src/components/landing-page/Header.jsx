@@ -10,7 +10,7 @@ const Header = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-3xl font-bold">Taskify</h1>
+          <img src='/images/Taskify-Crop.jpg' alt='' className="w-[50%]"/>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, x: 50 }}
@@ -20,13 +20,13 @@ const Header = () => {
         >
           <Link
             to="/login"
-            className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+            className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded transition duration-300"
           >
             Login
           </Link>
           <Link
             to="/register"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+            className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300"
           >
             Sign Up
           </Link>

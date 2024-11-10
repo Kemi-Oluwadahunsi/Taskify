@@ -41,7 +41,7 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobile }) {
           isOpen ? "w-64" : "w-20"
         } ${
           isMobile && !isOpen ? "-translate-x-full" : "translate-x-0"
-        } bg-gray-800 text-white overflow-hidden`}
+        } bg-[#390764] text-white overflow-hidden`}
       >
         <div className="flex justify-between items-center p-4">
           {isOpen && (
@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobile }) {
           {/* Desktop toggle button */}
           <button
             onClick={toggleSidebar}
-            className="text-white focus:outline-none p-1 rounded-full hover:bg-gray-700 transition-colors duration-200 hidden lg:block"
+            className="text-[#6921a8] focus:outline-none p-1 bg-[#dcb4fe] rounded-full hover:bg-purple-700 hover:text-[#f4e8ff] transition-colors duration-200 hidden lg:block"
           >
             {isOpen && !isMobile ? (
               <ChevronLeft size={24} />
@@ -71,14 +71,14 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobile }) {
           </button>
         </div>
         <nav>
-          <ul className="mt-6">
+          <ul className="mt-12">
             {menuItems.map((item) => (
-              <li key={item.path} className="mb-2">
+              <li key={item.path} className="mb-4">
                 <NavLink
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex items-center p-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200 ${
-                      isActive ? "bg-gray-700 text-white" : ""
+                    `flex items-center p-3 text-gray-300 hover:bg-[#ac55f7] hover:text-white text-xl transition-colors duration-200 ${
+                      isActive ? "bg-[#ac55f7] text-white" : ""
                     }`
                   }
                   onClick={() => isMobile && toggleSidebar()}

@@ -35,7 +35,7 @@ export default function Dashboard() {
   return (
     <div
       className={`min-h-screen flex ${
-        darkMode ? "dark bg-background-dark text-white" : "bg-background-light"
+        darkMode ? "dark bg-background-dark text-white" : "bg-[#faf5ff]"
       }`}
     >
       <Sidebar
@@ -48,7 +48,7 @@ export default function Dashboard() {
           sidebarOpen && !isMobile ? "md:ml-64" : "md:ml-[5%]"
         }`}
       >
-        <header className="bg-primary text-white shadow-lg p-4 flex justify-between items-center">
+        <header className="bg-[#500725] text-white shadow-lg p-4 flex justify-between items-center">
           <div className="flex items-center">
             <button
               onClick={toggleSidebar}
@@ -67,8 +67,8 @@ export default function Dashboard() {
             {darkMode ? <Sun size={24} /> : <Moon size={24} />}
           </button>
         </header>
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-lightest dark:bg-[#1F1F1F] py-4 md:py-6">
-          <div className="w-[90%] max-w-6xl bg-lighter mx-auto p-4 rounded-xl min-h-full">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#ebd5ff] dark:bg-[#1F1F1F] py-4 md:py-6">
+          <div className="w-[90%] max-w-6xl bg-[#f4e8ff] mx-auto p-4 rounded-xl min-h-full">
             <Routes>
               <Route path="overview" element={<DashboardContent />} />
               <Route path="tasks" element={<TaskList />} />

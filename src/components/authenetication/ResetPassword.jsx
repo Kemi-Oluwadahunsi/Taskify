@@ -153,9 +153,9 @@
 //   );
 // }
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -165,9 +165,18 @@ export default function ResetPassword() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { resetPassword } = useAuth();
+  const { resetPassword, resetToken, setResetToken } = useAuth();
   const navigate = useNavigate();
-  const { token } = useParams();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check if the token is in the URL (for email link clicks)
+    const params = new URLSearchParams(location.search);
+    const tokenFromUrl = params.get("token");
+    if (tokenFromUrl) {
+      setResetToken(tokenFromUrl);
+    }
+  }, [location, setResetToken]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -176,20 +185,65 @@ export default function ResetPassword() {
       return setError("Passwords do not match");
     }
 
+    if (!resetToken) {
+      return setError(
+        "Invalid or missing reset token. Please request a new password reset."
+      );
+    }
+
     try {
-      const response = await resetPassword(token, password);
+      const response = await resetPassword(password);
       navigate("/login", {
         state: {
-          message: response || "Password has been reset successfully. You can now log in with your new password.",
+          message: response,
         },
       });
     } catch (error) {
       setError(
-        "Failed to reset password. Please try again or request a new reset link", error
+        error.message || "An error occurred while resetting the password."
       );
-      console.error(error)
     }
   };
+
+  if (!resetToken) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Invalid Reset Link</h2>
+          <p>
+            The password reset link is invalid or has expired. Please request a
+            new one.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // const { resetPassword } = useAuth();
+  // const navigate = useNavigate();
+  // const { token } = useParams();
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (password !== confirmPassword) {
+  //     return setError("Passwords do not match");
+  //   }
+
+  //   try {
+  //     const response = await resetPassword(token, password);
+  //     navigate("/login", {
+  //       state: {
+  //         message: response || "Password has been reset successfully. You can now log in with your new password.",
+  //       },
+  //     });
+  //   } catch (error) {
+  //     setError(
+  //       "Failed to reset password. Please try again or request a new reset link", error
+  //     );
+  //     console.error(error)
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center lg:bg-purple-200 w-full">
