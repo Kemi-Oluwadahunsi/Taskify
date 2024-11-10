@@ -521,26 +521,62 @@ export function AuthProvider({ children }) {
   const forgotPassword = async (email) => {
     try {
       console.log("Requesting password reset for:", email);
-      await axios.post(`${API_URL}/forgot-password`, { email });
-      console.log("Password reset request sent successfully");
+      const response = await axios.post(`${API_URL}/forgot-password`, {
+        email,
+      });
+      console.log("Password reset request response:", response.data);
+      return response.data.message;
     } catch (error) {
       console.error("Error requesting password reset:", error);
-      throw error.response ? error.response.data : new Error("Network error");
+      if (error.response && error.response.data) {
+        throw new Error(error.response.data.message);
+      } else {
+        throw new Error("An error occurred while requesting password reset.");
+      }
     }
   };
 
   const resetPassword = async (token, newPassword) => {
     try {
       console.log("Attempting to reset password");
-      await axios.post(`${API_URL}/reset-password/${token}`, {
-        password: newPassword,
+      const response = await axios.post(`${API_URL}/reset-password/${token}`, {
+        newPassword,
       });
-      console.log("Password reset successfully");
+      console.log("Password reset response:", response.data);
+      return response.data.message;
     } catch (error) {
       console.error("Error resetting password:", error);
-      throw error.response ? error.response.data : new Error("Network error");
+      if (error.response && error.response.data) {
+        throw new Error(error.response.data.message);
+      } else {
+        throw new Error("An error occurred while resetting password.");
+      }
     }
   };
+
+  // const forgotPassword = async (email) => {
+  //   try {
+  //     console.log("Requesting password reset for:", email);
+  //     await axios.post(`${API_URL}/forgot-password`, { email });
+  //     console.log("Password reset request sent successfully");
+  //   } catch (error) {
+  //     console.error("Error requesting password reset:", error);
+  //     throw error.response ? error.response.data : new Error("Network error");
+  //   }
+  // };
+
+  // const resetPassword = async (token, newPassword) => {
+  //   try {
+  //     console.log("Attempting to reset password");
+  //     await axios.post(`${API_URL}/reset-password/${token}`, {
+  //       password: newPassword,
+  //     });
+  //     console.log("Password reset successfully");
+  //   } catch (error) {
+  //     console.error("Error resetting password:", error);
+  //     throw error.response ? error.response.data : new Error("Network error");
+  //   }
+  // };
 
   const updateProfile = async (updatedProfile) => {
     try {

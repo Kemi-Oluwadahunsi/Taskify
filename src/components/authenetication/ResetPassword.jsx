@@ -177,11 +177,10 @@ export default function ResetPassword() {
     }
 
     try {
-      await resetPassword(token, password);
+      const response = await resetPassword(token, password);
       navigate("/login", {
         state: {
-          message:
-            "Password has been reset successfully. You can now log in with your new password.",
+          message: response || "Password has been reset successfully. You can now log in with your new password.",
         },
       });
     } catch (error) {
