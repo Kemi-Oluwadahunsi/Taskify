@@ -372,7 +372,7 @@ export default function Dashboard() {
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-lightest dark:bg-[#1F1F1F] py-4 md:py-6">
           <div className="w-[90%] max-w-6xl bg-lighter mx-auto p-4 rounded-xl min-h-full">
             <Routes>
-              <Route path="/" element={<DashboardContent />} />
+              <Route path="/overview" element={<DashboardContent />} />
               <Route path="/tasks" element={<TaskList />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/analytics" element={<Analytics />} />

@@ -579,7 +579,7 @@ import {
 } from "lucide-react";
 
 const menuItems = [
-  { icon: Home, label: "Dashboard", path: "/" },
+  { icon: Home, label: "Dashboard", path: "/overview" },
   { icon: CheckSquare, label: "Tasks", path: "/tasks" },
   { icon: Calendar, label: "Calendar", path: "/calendar" },
   { icon: BarChart2, label: "Analytics", path: "/analytics" },

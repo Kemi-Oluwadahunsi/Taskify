@@ -1,4 +1,4 @@
-import { BarChart, Bell, Calendar, Clock, Lock, Moon, Target, Users, Zap } from "lucide-react";
+import { BarChart, Bell, Calendar, Clock,  Moon, Zap } from "lucide-react";
 
 import { motion } from "framer-motion"
 
@@ -50,24 +50,9 @@ import { motion } from "framer-motion"
         description: "Add tasks in seconds with natural language processing",
       },
       {
-        icon: <Target size={24} />,
-        title: "Goal Setting",
-        description: "Set and track personal and professional goals",
-      },
-      {
         icon: <Clock size={24} />,
         title: "Time Tracking",
         description: "Monitor time spent on tasks to improve efficiency",
-      },
-      {
-        icon: <Users size={24} />,
-        title: "Team Collaboration",
-        description: "Work seamlessly with your team on shared projects",
-      },
-      {
-        icon: <Lock size={24} />,
-        title: "Secure Data",
-        description: "Your information is protected with top-notch security",
       },
     ];
 

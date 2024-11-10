@@ -262,7 +262,7 @@ export default function Login() {
     if (validateForm()) {
       try {
         await login(formData.email, formData.password);
-        navigate("/dashboard");
+        navigate("/dashboard/overview");
       } catch (error) {
         console.log("Error logging in:", error);
         setFormErrors({

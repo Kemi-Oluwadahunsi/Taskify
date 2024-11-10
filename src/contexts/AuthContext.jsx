@@ -1,6 +1,3 @@
-
-
-
 // import { createContext, useState, useContext, useEffect } from "react";
 // import axios from "axios";
 
@@ -141,7 +138,6 @@
 //       throw error.response ? error.response.data : new Error("Network error");
 //     }
 //   };
-
 
 //   const updateProfile = async (updatedProfile) => {
 //     try {
