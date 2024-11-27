@@ -95,11 +95,21 @@
 
 import { useState, useEffect } from "react";
 import { useAppContext } from "../contexts/AppContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+} from "lucide-react";
 
-export default function Calendar() {
+export default function CalendarView() {
   const { tasks } = useAppContext();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarDays, setCalendarDays] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTasks, setSelectedTasks] = useState([]);
 
   useEffect(() => {
     generateCalendarDays(currentDate);
@@ -147,77 +157,132 @@ export default function Calendar() {
   };
 
   const getDayClass = (day) => {
-    if (!day.date) return "bg-gray-100";
+    if (!day.date) return "bg-gray-100 dark:bg-gray-800";
     const today = new Date();
-    if (day.date.toDateString() === today.toDateString()) return "bg-blue-100";
-    return "bg-white";
+    if (day.date.toDateString() === today.toDateString())
+      return "bg-blue-100 dark:bg-blue-800";
+    return "bg-white dark:bg-gray-700";
   };
 
   const getTaskColor = (priority) => {
     switch (priority) {
       case "high":
-        return "bg-red-500";
+        return "bg-red-500 dark:bg-red-700";
       case "medium":
-        return "bg-yellow-500";
+        return "bg-yellow-500 dark:bg-yellow-700";
       case "low":
-        return "bg-green-500";
+        return "bg-green-500 dark:bg-green-700";
       default:
-        return "bg-blue-500";
+        return "bg-blue-500 dark:bg-blue-700";
+    }
+  };
+
+  const handleDateClick = (day) => {
+    if (day.date) {
+      setSelectedDate(day.date);
+      setSelectedTasks(day.tasks);
     }
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Calendar</h2>
-      <div className="flex justify-between items-center mb-4">
-        <button
-          onClick={prevMonth}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Previous
-        </button>
-        <h3 className="text-xl font-semibold">
-          {currentDate.toLocaleString("default", {
-            month: "long",
-            year: "numeric",
-          })}
-        </h3>
-        <button
-          onClick={nextMonth}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Next
-        </button>
-      </div>
-      <div className="grid grid-cols-7 gap-2">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-          <div key={day} className="text-center font-bold">
-            {day}
+    <div className="container mx-auto p-4 space-y-6">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-2xl font-bold">Calendar</CardTitle>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" size="icon" onClick={prevMonth}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-xl font-semibold">
+              {currentDate.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+            <Button variant="outline" size="icon" onClick={nextMonth}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
-        ))}
-        {calendarDays.map((day, index) => (
-          <div
-            key={index}
-            className={`border p-2 h-24 overflow-y-auto ${getDayClass(day)}`}
-          >
-            {day.date && (
-              <>
-                <div className="font-semibold">{day.date.getDate()}</div>
-                {day.tasks.map((task) => (
-                  <div
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-7 gap-2">
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              <div key={day} className="text-center font-bold p-2">
+                {day}
+              </div>
+            ))}
+            {calendarDays?.map((day, index) => (
+              <div
+                key={index}
+                className={`border p-2 h-20 overflow-y-auto ${getDayClass(
+                  day
+                )} rounded-lg cursor-pointer transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600`}
+                onClick={() => handleDateClick(day)}
+              >
+                {day.date && (
+                  <>
+                    <div className="font-semibold">{day.date.getDate()}</div>
+                    {day.tasks?.slice(0, 3).map((task) => (
+                      <div
+                        key={task.id}
+                        className={`text-xs p-1 mb-1 text-white rounded ${getTaskColor(
+                          task.priority
+                        )}`}
+                      >
+                        {task.title}
+                      </div>
+                    ))}
+                    {day.tasks?.length > 3 && (
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        +{day.tasks?.length - 3} more
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {selectedDate && (
+        <Card className="max-w-sm">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold flex items-center">
+              <CalendarIcon className="mr-2 h-5 w-5" />
+              Tasks for {selectedDate.toDateString()}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {selectedTasks.length > 0 ? (
+              <ul className="space-y-2">
+                {selectedTasks.map((task) => (
+                  <li
                     key={task.id}
-                    className={`text-xs p-1 mb-1 text-white rounded ${getTaskColor(
-                      task.priority
-                    )}`}
+                    className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg"
                   >
-                    {task.title}
-                  </div>
+                    <span>{task.title}</span>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant={task.priority}>{task.priority}</Badge>
+                      <Badge
+                        variant={
+                          task.status === "completed" ? "success" : "default"
+                        }
+                      >
+                        {task.status}
+                      </Badge>
+                    </div>
+                  </li>
                 ))}
-              </>
+              </ul>
+            ) : (
+              <p className="text-gray-500 dark:text-gray-400">
+                No tasks for this date.
+              </p>
             )}
-          </div>
-        ))}
-      </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

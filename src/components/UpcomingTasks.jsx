@@ -18,11 +18,11 @@ export default function UpcomingTasks() {
         {pendingTasks.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400">No upcoming tasks.</p>
         ) : (
-          <ul className="space-y-4 flex items-center gap-4">
+          <ul className="flex gap-4 border">
             {pendingTasks.map((task) => (
               <li
                 key={task.id}
-                className=" max-w-[15rem] bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-4 rounded-lg shadow-md"
+                className=" max-w-[15rem] max-h-[12rem] h-[10rem] flex flex-col justify-between bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-4 rounded-lg shadow-md"
               >
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
                   {task.title}

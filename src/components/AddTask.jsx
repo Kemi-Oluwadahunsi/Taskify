@@ -1,8 +1,11 @@
-// import { useTask } from "../contexts/TaskContext";
+
+
+
+// import { useAppContext } from "../contexts/AppContext";
 // import { motion } from "framer-motion";
 // import { Clock, Plus, Minus, X, Tag } from "lucide-react";
 // import { format } from "date-fns";
-// import { useState } from "react";
+// import { useState, useEffect } from "react";
 
 // const commonTags = [
 //   "Work",
@@ -15,35 +18,57 @@
 //   "Project",
 // ];
 
-// export default function AddTask() {
+// export default function AddTask({ initialTask, onSubmit, isEditing }) {
 //   const [title, setTitle] = useState("");
 //   const [description, setDescription] = useState("");
 //   const [dueDate, setDueDate] = useState("");
 //   const [priority, setPriority] = useState("medium");
+//   const [status, setStatus] = useState("pending");
 //   const [subtasks, setSubtasks] = useState([]);
 //   const [newSubtask, setNewSubtask] = useState("");
 //   const [estimatedTime, setEstimatedTime] = useState({ hours: 0, minutes: 0 });
 //   const [tags, setTags] = useState([]);
 //   const [newTag, setNewTag] = useState("");
-//   const { addTask } = useTask();
+//   const { addTask, updateTask } = useAppContext();
+
+//   useEffect(() => {
+//     if (initialTask) {
+//       setTitle(initialTask.title);
+//       setDescription(initialTask.description);
+//       setDueDate(initialTask.dueDate);
+//       setPriority(initialTask.priority);
+//       setStatus(initialTask.status || "pending");
+//       setSubtasks(initialTask.subtasks || []);
+//       setEstimatedTime(initialTask.estimatedTime || { hours: 0, minutes: 0 });
+//       setTags(initialTask.tags || []);
+//     }
+//   }, [initialTask]);
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     try {
-//       const newTask = {
+//       const taskData = {
 //         title,
 //         description,
 //         dueDate: dueDate ? format(new Date(dueDate), "yyyy-MM-dd") : null,
 //         priority,
+//         status,
 //         subtasks,
 //         estimatedTime,
 //         tags,
 //         createdAt: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
 //       };
-//       await addTask(newTask);
-//       resetForm();
+
+//       if (isEditing) {
+//         await updateTask({ ...initialTask, ...taskData });
+//       } else {
+//         await addTask(taskData);
+//       }
+
+//       onSubmit(taskData);
+//       if (!isEditing) resetForm();
 //     } catch (error) {
-//       console.error("Error creating task:", error);
+//       console.error("Error creating/updating task:", error);
 //     }
 //   };
 
@@ -52,6 +77,7 @@
 //     setDescription("");
 //     setDueDate("");
 //     setPriority("medium");
+//     setStatus("pending");
 //     setSubtasks([]);
 //     setEstimatedTime({ hours: 0, minutes: 0 });
 //     setTags([]);
@@ -100,10 +126,12 @@
 //       animate={{ opacity: 1, y: 0 }}
 //       transition={{ duration: 0.5 }}
 //       onSubmit={handleSubmit}
-//       className="mb-8 p-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-lg"
+//       className={`${
+//         isEditing ? "mx-0" : "mx-8"
+//       } p-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-lg`}
 //     >
 //       <h2 className="text-3xl font-bold mb-6 text-purple-600 dark:text-purple-400">
-//         Create a New Task
+//         {isEditing ? "Edit Task" : "Create a New Task"}
 //       </h2>
 //       <div className="space-y-6">
 //         <input
@@ -154,6 +182,24 @@
 //               <option value="low">Low</option>
 //               <option value="medium">Medium</option>
 //               <option value="high">High</option>
+//             </select>
+//           </div>
+//           <div className="flex-1">
+//             <label
+//               htmlFor="status"
+//               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+//             >
+//               Status
+//             </label>
+//             <select
+//               id="status"
+//               value={status}
+//               onChange={(e) => setStatus(e.target.value)}
+//               className="w-full px-4 py-2 rounded-md border-2 border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//             >
+//               <option value="pending">Pending</option>
+//               <option value="in-progress">In Progress</option>
+//               <option value="completed">Completed</option>
 //             </select>
 //           </div>
 //         </div>
@@ -310,12 +356,11 @@
 //         type="submit"
 //         className="mt-6 w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors duration-200 shadow-md"
 //       >
-//         Create Task
+//         {isEditing ? "Update Task" : "Create Task"}
 //       </motion.button>
 //     </motion.form>
 //   );
 // }
-
 
 import { useAppContext } from "../contexts/AppContext";
 import { motion } from "framer-motion";
@@ -398,6 +443,7 @@ export default function AddTask({ initialTask, onSubmit, isEditing }) {
     setEstimatedTime({ hours: 0, minutes: 0 });
     setTags([]);
     setNewTag("");
+    setNewSubtask("");
   };
 
   const handleAddSubtask = () => {
@@ -676,4 +722,4 @@ export default function AddTask({ initialTask, onSubmit, isEditing }) {
       </motion.button>
     </motion.form>
   );
-}
+}                               
