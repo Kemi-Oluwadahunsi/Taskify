@@ -48,8 +48,7 @@ export default function UserProfile() {
           <div className="text-center">
             <img
               src={
-                editedUser.profileImage ||
-                "/placeholder.svg?height=200&width=200"
+                editedUser?.profileImage || "/images/authbg.webp"
               }
               alt="Profile"
               className="w-32 h-32 mx-auto rounded-full border-4 border-white shadow-lg object-cover"
@@ -72,11 +71,11 @@ export default function UserProfile() {
           </div>
           <div className="mt-4 text-center">
             <h2 className="text-2xl font-semibold text-white">
-              {currentUser.username}
+              {currentUser?.username}
             </h2>
-            <p className="text-gray-200">{currentUser.email}</p>
+            <p className="text-gray-200">{currentUser?.email}</p>
             <p className="mt-2 inline-block bg-white text-primary px-3 py-1 rounded-full text-sm">
-              {currentUser.status}
+              {currentUser?.status}
             </p>
           </div>
         </div>
@@ -105,7 +104,7 @@ export default function UserProfile() {
                   type="text"
                   id="username"
                   name="username"
-                  value={editedUser.username}
+                  value={editedUser?.username}
                   onChange={handleInputChange}
                   className={`w-full px-3 py-2 rounded-lg ${
                     darkMode ? "bg-gray-700 text-white" : "bg-gray-100"
@@ -124,7 +123,7 @@ export default function UserProfile() {
                   type="email"
                   id="email"
                   name="email"
-                  value={editedUser.email}
+                  value={editedUser?.email}
                   onChange={handleInputChange}
                   className={`w-full px-3 py-2 rounded-lg ${
                     darkMode ? "bg-gray-700 text-white" : "bg-gray-100"
@@ -142,7 +141,7 @@ export default function UserProfile() {
                 <select
                   id="status"
                   name="status"
-                  value={editedUser.status}
+                  value={editedUser?.status}
                   onChange={handleInputChange}
                   className={`w-full px-3 py-2 rounded-lg ${
                     darkMode ? "bg-gray-700 text-white" : "bg-gray-100"
@@ -175,21 +174,21 @@ export default function UserProfile() {
             <div className="space-y-4">
               <div>
                 <h4 className="text-sm font-medium text-gray-500">Username</h4>
-                <p className="text-lg">{currentUser.username}</p>
+                <p className="text-lg">{currentUser?.username}</p>
               </div>
               <div>
                 <h4 className="text-sm font-medium text-gray-500">Email</h4>
-                <p className="text-lg">{currentUser.email}</p>
+                <p className="text-lg">{currentUser?.email}</p>
               </div>
               <div>
                 <h4 className="text-sm font-medium text-gray-500">Status</h4>
-                <p className="text-lg">{currentUser.status}</p>
+                <p className="text-lg">{currentUser?.status}</p>
               </div>
               <div>
                 <h4 className="text-sm font-medium text-gray-500">
                   Completed Tasks
                 </h4>
-                <p className="text-lg">{currentUser.completedTasks}</p>
+                <p className="text-lg">{currentUser?.completedTasks}</p>
               </div>
             </div>
           )}

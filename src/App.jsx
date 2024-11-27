@@ -35,7 +35,6 @@ function App() {
           <Route path="/verify-email" element={<EmailVerification />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
           <Route
             path="/dashboard/*"
             element={
