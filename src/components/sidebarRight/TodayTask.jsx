@@ -96,9 +96,9 @@ const TodayTask = () => {
   };
 
   return (
-    <div className="">
+    <div className="mt-[3rem]">
       {todayTask ? (
-        <div className="bg-[#390764] text-white dark:bg-gray-600 p-4 rounded-xl shadow-lg">
+        <div className="bg-[#390764] text-white dark:bg-gray-600 p-4 rounded-xl shadow-lg ">
           <h2 className="text-xl font-bold mb-4">Today&apos;s Task</h2>
           <div className="mb-4">
             <h3 className="mb-2 text-lg font-semibold">{todayTask?.title}</h3>

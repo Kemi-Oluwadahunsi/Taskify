@@ -272,10 +272,10 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobile }) {
               }`}
             >
               <p className="font-semibold">
-                {currentUser?.username || "Username"}
+                {currentUser?.username || "Kemi Dahunsi"}
               </p>
-              <p className="text-gray-400">
-                {currentUser?.email || "example@gmail.com"}
+              <p className="text-gray-950 text-[0.7em]">
+                {currentUser?.email || "oluwakemioluwadahunsi@gmail.com"}
               </p>
             </div>
           </NavLink>
