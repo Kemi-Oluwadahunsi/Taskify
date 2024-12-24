@@ -186,14 +186,14 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobile }) {
 
           <button
             onClick={toggleSidebar}
-            className="text-[#350764] focus:outline-none p-1 rounded-full hover:bg-gray-700 transition-colors duration-200 lg:hidden"
+            className="text-[#350764] focus:outline-none p-1 rounded-full hover:bg-gray-700 transition-colors duration-200 md:hidden"
           >
             {isOpen && isMobile && <X size={24} />}
           </button>
 
           <button
             onClick={toggleSidebar}
-            className="text-[#6921a8] focus:outline-none p-1 bg-[#dcb4fe] rounded-full hover:bg-purple-700 hover:text-[#f4e8ff] transition-colors duration-200 hidden lg:block"
+            className="text-[#6921a8] focus:outline-none p-1 bg-[#dcb4fe] rounded-full hover:bg-purple-700 hover:text-[#f4e8ff] transition-colors duration-200 hidden md:block"
           >
             {isOpen && !isMobile ? (
               <ChevronLeft size={24} />

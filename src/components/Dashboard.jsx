@@ -52,7 +52,7 @@ export default function Dashboard() {
         isMobile={isMobile}
       />
       <div className="flex-1 flex flex-col">
-        <header className="sticky top-0 z-10 max-w-[67rem] bg-white w-full mx-auto dark:bg-gray-800 shadow-lg">
+        <header className="sticky top-0 left-0 z-10 max-w-[67.1rem] bg-white w-full mx-auto dark:bg-gray-800 shadow-lg">
           <div className="w-full px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-4">
               <div className="flex items-center">
@@ -62,7 +62,7 @@ export default function Dashboard() {
                 >
                   <Menu size={24} />
                 </button>
-                <h1 className="ml-2 text-xl font-bold text-gray-900 dark:text-white">
+                <h1 className="ml-2 text-xl font-bold text-gray-900 dark:text-white md:hidden">
                   Taskify
                 </h1>
               </div>
