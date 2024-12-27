@@ -2,14 +2,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
-/* body {
-  @apply bg-gradient-to-br from-background-light to-accent dark:from-background-dark dark:to-primary transition-bg duration-500;
-} */
-
 .react-big-calendar {
   @apply font-sans;
 }

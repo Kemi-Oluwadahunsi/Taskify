@@ -12,9 +12,7 @@ createRoot(document.getElementById("root")).render(
     <ThemeProvider>
       <AuthProvider>
         <AppProvider>
-          {/* <TaskProvider> */}
           <App />
-          {/* </TaskProvider> */}
         </AppProvider>
       </AuthProvider>
     </ThemeProvider>

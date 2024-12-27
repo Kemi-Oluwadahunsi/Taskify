@@ -14,11 +14,13 @@ export default function ForgotPassword() {
     try {
       setError("");
       setMessage("");
-      const response = await forgotPassword(email);
+      const response = await forgotPassword(email);   
+      setEmail("");
       setMessage(
         response ||
           "If an account with that email exists, a password reset link has been sent."
       );
+   
     } catch (error) {
       setError("Failed to initiate password reset. Please try again.", error);
     }
@@ -91,7 +93,7 @@ export default function ForgotPassword() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent transition duration-300 rounded-md shadow-xl font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-xl font-bold text-lg text-white bg-gradient-to-r from-purple-500 to-pink-500  hover:from-purple-600 hover:to-pink-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                 >
                   Send Reset Link
                 </motion.button>
@@ -100,7 +102,7 @@ export default function ForgotPassword() {
             <div className="mt-4 text-center">
               <Link
                 to="/login"
-                className="text-primary font-bold hover:text-secondary underline decoration-inherit underline-offset-4"
+                className="text-primary font-bold hover:text-purple-950 underline decoration-inherit underline-offset-4"
               >
                 Back to Login
               </Link>

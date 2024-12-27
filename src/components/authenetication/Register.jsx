@@ -316,7 +316,7 @@ export default function Register() {
           <div className="mt-5">
             <Link
               to="/login"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-xl font-bold text-lg text-white bg-gradient-to-r from-purple-500 to-pink-500  hover:from-purple-600 hover:to-pink-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Go to Login
             </Link>
@@ -367,7 +367,7 @@ export default function Register() {
                 Or{" "}
                 <Link
                   to="/login"
-                  className="font-bold text-primary hover:text-secondary underline decoration-inherit underline-offset-4"
+                  className="font-bold text-primary hover:text-purple-950 underline decoration-inherit underline-offset-4"
                 >
                   sign in to your account
                 </Link>
@@ -472,7 +472,7 @@ export default function Register() {
                     whileTap={{ scale: 0.5 }}
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full flex justify-center py-2 px-4 border border-transparent transition duration-300 rounded-md shadow-xl font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-xl font-bold text-lg text-white bg-gradient-to-r from-purple-500 to-pink-500  hover:from-purple-600 hover:to-pink-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
                   >
                     {isSubmitting ? "Initiating registration..." : "Register"}
                   </motion.button>

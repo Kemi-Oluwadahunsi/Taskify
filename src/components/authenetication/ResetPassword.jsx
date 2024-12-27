@@ -345,6 +345,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -397,6 +398,9 @@ export default function ResetPassword() {
       console.log(`Sending reset request with token: ${token}`);
       const response = await resetPassword(token, password);
       setSuccess(response);
+      toast.success(
+        "Password reset successful. You can now log in with your new password."
+      );
       setTimeout(() => {
         navigate("/login", {
           state: {
@@ -406,6 +410,7 @@ export default function ResetPassword() {
         });
       }, 3000);
     } catch (error) {
+      toast.error("Error resetting password, please try again!")
       setError(
         error.message || "An error occurred while resetting the password."
       );
@@ -545,7 +550,7 @@ export default function ResetPassword() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent transition duration-300 rounded-md shadow-xl font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-xl font-bold text-lg text-white bg-gradient-to-r from-purple-500 to-pink-500  hover:from-purple-600 hover:to-pink-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
                 >
                   Reset Password
                 </motion.button>

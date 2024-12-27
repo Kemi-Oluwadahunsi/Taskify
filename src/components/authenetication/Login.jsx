@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Login() {
   const [searchParams] = useSearchParams();
@@ -54,9 +55,11 @@ export default function Login() {
     if (validateForm()) {
       try {
         await login(formData.email, formData.password);
+        toast.success("Login successful");
         navigate("/dashboard/overview");
       } catch (error) {
         console.log("Error logging in:", error);
+        toast.error("Error logging in, please try again.");
         setFormErrors({
           ...formErrors,
           submit:
@@ -179,7 +182,7 @@ export default function Login() {
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
-                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300  accent-purple-900 rounded"
                     />
                     <label
                       htmlFor="remember-me"
@@ -191,7 +194,7 @@ export default function Login() {
                   <div className="text-sm">
                     <Link
                       to="/forgot-password"
-                      className="font-medium text-primary hover:text-secondary"
+                      className="font-medium text-primary hover:text-purple-950"
                     >
                       Forgot your password?
                     </Link>
@@ -201,7 +204,7 @@ export default function Login() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.5 }}
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent transition duration-300 rounded-md shadow-xl font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-xl font-bold text-lg text-white bg-gradient-to-r from-purple-500 to-pink-500  hover:from-purple-600 hover:to-pink-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                 >
                   Login
                 </motion.button>
@@ -211,7 +214,7 @@ export default function Login() {
               Don&apos;t have an account?{" "}
               <Link
                 to="/register"
-                className="text-primary font-bold hover:text-secondary underline decoration-inherit underline-offset-4"
+                className="text-primary font-bold hover:text-purple-950 underline decoration-inherit underline-offset-4"
               >
                 Register here
               </Link>
