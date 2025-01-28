@@ -6,7 +6,6 @@ import {
   RotateCcw,
   Coffee,
   Book,
-  // CheckCircle,
 } from "lucide-react";
 
 export default function PomodoroTimer() {
