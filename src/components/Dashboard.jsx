@@ -204,7 +204,7 @@ export default function Dashboard() {
                   />
                   <div className="hidden md:flex flex-col">
                     <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      {currentUser?.username || "Kemi Dahunsi"}
+                      {currentUser?.name || "Kemi Dahunsi"}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {formattedDate} {formattedTime}

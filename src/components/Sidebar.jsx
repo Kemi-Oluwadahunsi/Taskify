@@ -272,7 +272,7 @@ export default function Sidebar({ isOpen, toggleSidebar, isMobile }) {
               }`}
             >
               <p className="font-semibold">
-                {currentUser?.username || "Kemi Dahunsi"}
+                {currentUser?.name || "Kemi Dahunsi"}
               </p>
               <p className="text-gray-950 text-[0.7em]">
                 {currentUser?.email || "oluwakemioluwadahunsi@gmail.com"}

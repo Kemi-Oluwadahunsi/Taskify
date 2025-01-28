@@ -1,6 +1,3 @@
-
-
-
 // import { useAppContext } from "../contexts/AppContext";
 // import { motion } from "framer-motion";
 // import { Clock, Plus, Minus, X, Tag } from "lucide-react";
@@ -82,6 +79,7 @@
 //     setEstimatedTime({ hours: 0, minutes: 0 });
 //     setTags([]);
 //     setNewTag("");
+//     setNewSubtask("");
 //   };
 
 //   const handleAddSubtask = () => {
@@ -360,13 +358,15 @@
 //       </motion.button>
 //     </motion.form>
 //   );
-// }
+// }                               
 
 import { useAppContext } from "../contexts/AppContext";
 import { motion } from "framer-motion";
 import { Clock, Plus, Minus, X, Tag } from "lucide-react";
 import { format } from "date-fns";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 const commonTags = [
   "Work",
@@ -391,6 +391,7 @@ export default function AddTask({ initialTask, onSubmit, isEditing }) {
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
   const { addTask, updateTask } = useAppContext();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     if (initialTask) {
@@ -418,18 +419,26 @@ export default function AddTask({ initialTask, onSubmit, isEditing }) {
         estimatedTime,
         tags,
         createdAt: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+        userId: currentUser?.userId,
       };
 
+      let result;
       if (isEditing) {
-        await updateTask({ ...initialTask, ...taskData });
+        result = await updateTask({ ...initialTask, ...taskData });
       } else {
-        await addTask(taskData);
+        result = await addTask(taskData);
       }
 
-      onSubmit(taskData);
-      if (!isEditing) resetForm();
+      if (result.success) {
+        toast.success(result.message);
+        onSubmit(taskData);
+        if (!isEditing) resetForm();
+      } else {
+        toast.error(result.message);
+      }
     } catch (error) {
       console.error("Error creating/updating task:", error);
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -722,4 +731,4 @@ export default function AddTask({ initialTask, onSubmit, isEditing }) {
       </motion.button>
     </motion.form>
   );
-}                               
+}
