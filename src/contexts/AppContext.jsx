@@ -1,5 +1,8 @@
 import axios from "axios";
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, 
+  useEffect, 
+  useCallback
+} from "react";
 import { useAuth } from "./AuthContext";
 
 const AppContext = createContext();
@@ -82,64 +85,66 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem("darkMode", (!darkMode).toString());
   };
 
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  // useEffect(() => {
+  //   localStorage.setItem("tasks", JSON.stringify(tasks));
+  // }, [tasks]);
 
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
-  }, [user]);
+  // useEffect(() => {
+  //   localStorage.setItem("user", JSON.stringify(user));
+  // }, [user]);
 
-  useEffect(() => {
-    localStorage.setItem("categories", JSON.stringify(categories));
-  }, [categories]);
+  // useEffect(() => {
+  //   localStorage.setItem("categories", JSON.stringify(categories));
+  // }, [categories]);
 
-  // New useEffects for settings
-  useEffect(() => {
-    localStorage.setItem("accentColor", accentColor);
-  }, [accentColor]);
+  // // New useEffects for settings
+  // useEffect(() => {
+  //   localStorage.setItem("accentColor", accentColor);
+  // }, [accentColor]);
 
-  useEffect(() => {
-    localStorage.setItem(
-      "notificationSettings",
-      JSON.stringify(notificationSettings)
-    );
-  }, [notificationSettings]);
+  // useEffect(() => {
+  //   localStorage.setItem(
+  //     "notificationSettings",
+  //     JSON.stringify(notificationSettings)
+  //   );
+  // }, [notificationSettings]);
 
-  useEffect(() => {
-    localStorage.setItem("timeFormat", timeFormat);
-  }, [timeFormat]);
+  // useEffect(() => {
+  //   localStorage.setItem("timeFormat", timeFormat);
+  // }, [timeFormat]);
 
-  useEffect(() => {
-    localStorage.setItem("language", language);
-  }, [language]);
+  // useEffect(() => {
+  //   localStorage.setItem("language", language);
+  // }, [language]);
 
-  useEffect(() => {
-    localStorage.setItem("soundEnabled", soundEnabled.toString());
-  }, [soundEnabled]);
+  // useEffect(() => {
+  //   localStorage.setItem("soundEnabled", soundEnabled.toString());
+  // }, [soundEnabled]);
 
-  useEffect(() => {
-    localStorage.setItem("privacyMode", privacyMode.toString());
-  }, [privacyMode]);
+  // useEffect(() => {
+  //   localStorage.setItem("privacyMode", privacyMode.toString());
+  // }, [privacyMode]);
 
-  useEffect(() => {
-    localStorage.setItem("calendarStartDay", calendarStartDay);
-  }, [calendarStartDay]);
+  // useEffect(() => {
+  //   localStorage.setItem("calendarStartDay", calendarStartDay);
+  // }, [calendarStartDay]);
 
-  useEffect(() => {
-    localStorage.setItem("taskViewMode", taskViewMode);
-  }, [taskViewMode]);
+  // useEffect(() => {
+  //   localStorage.setItem("taskViewMode", taskViewMode);
+  // }, [taskViewMode]);
 
-  useEffect(() => {
-    localStorage.setItem("pomodoroSettings", JSON.stringify(pomodoroSettings));
-  }, [pomodoroSettings]);
+  // useEffect(() => {
+  //   localStorage.setItem("pomodoroSettings", JSON.stringify(pomodoroSettings));
+  // }, [pomodoroSettings]);
+
+
 
     const addTask = async (task) => {
       try {
-        if (!currentUser || !currentUser?.id) {
+        if (!user || !user?.id) {
           throw new Error("User is not authenticated");
         }
-        const response = await axios.post(`${API_URL}/users/${currentUser?.id}/tasks`, {
+        const response = await axios.post(`${API_URL}/users/${user?.id}/tasks`, {
           title: task.title,
           description: task.description,
           dueDate: task.dueDate,
@@ -153,6 +158,7 @@ export const AppProvider = ({ children }) => {
 
         if (response.status === 201) {
           const newTask = response.data;
+          console.log(newTask);
           setTasks([...tasks, newTask]);
           return { success: true, message: "Task created successfully" };
         } else {
@@ -188,26 +194,73 @@ export const AppProvider = ({ children }) => {
       }
     };
 
-  const updateTask = (updatedTask) => {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === updatedTask.id) {
-          return {
-            ...updatedTask,
-            updatedAt: new Date().toISOString(),
-            completedDate:
-              updatedTask.status === "completed"
-                ? new Date().toISOString()
-                : task.completedDate,
-          };
+    const fetchUserTasks = useCallback(async () => {
+      if (!currentUser?.id) return;
+
+      try {
+        const response = await axios.get(
+          `${API_URL}/users/${currentUser.userid}/tasks`
+        );
+        if (response.status === 200) {
+          console.log(response.data);
+          setTasks(response.data);
+        } else {
+          throw new Error("Unexpected response status");
         }
-        return task;
-      })
-    );
+      } catch (error) {
+        console.error("Error fetching user tasks:", error);
+      }
+    }, [API_URL, currentUser?.userid]);
+
+       useEffect(() => {
+         fetchUserTasks();
+       }, [fetchUserTasks]);
+
+  const updateTask = async (taskId, updatedTask) => {
+    try {
+      if (!currentUser?.id) {
+        throw new Error("User is not authenticated");
+      }
+      const response = await axios.put(
+        `${API_URL}/users/${currentUser.userid}/tasks/${taskId}`,
+        updatedTask
+      );
+      if (response.status === 200) {
+        const updatedTaskIndex = tasks.findIndex((task) => task.id === taskId);
+        if (updatedTaskIndex !== -1) {
+          const updatedTasks = [...tasks];
+          updatedTasks[updatedTaskIndex] = response.data;
+          setTasks(updatedTasks);
+          return { success: true, message: "Task updated successfully" };
+        } else {
+          throw new Error("Task not found");
+        }
+      } else {
+        throw new Error("Unexpected response status");
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
   };
 
-  const deleteTask = (taskId) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+  const deleteTask = async (taskId) => {
+    try {
+      if (!currentUser?.userid) {
+        throw new Error("User is not authenticated");
+      }
+      const response = await axios.delete(
+        `${API_URL}/users/${currentUser.userid}/tasks/${taskId}`
+      );
+      if (response.status === 200) {
+        setTasks(tasks.filter((task) => task.id !== taskId));
+        return { success: true, message: "Task deleted successfully" };
+      } else {
+        throw new Error("Unexpected response status");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      return { success: false, message: "Failed to delete task" };
+    }
   };
 
   const assignTask = (taskId, userId) => {
@@ -394,6 +447,7 @@ export const AppProvider = ({ children }) => {
         setTaskViewMode,
         pomodoroSettings,
         setPomodoroSettings,
+        fetchUserTasks,
       }}
     >
       {children}

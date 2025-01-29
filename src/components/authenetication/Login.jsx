@@ -206,7 +206,7 @@ export default function Login() {
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-xl font-bold text-lg text-white bg-gradient-to-r from-purple-500 to-pink-500  hover:from-purple-600 hover:to-pink-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                 >
-                  {login ? "Logging in" : "Login" }
+                  Login
                 </motion.button>
               </form>
             </div>
